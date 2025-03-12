@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -175,10 +175,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -229,6 +229,54 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+
+  ------------------------------------------------------------------------------
+  -- NOTE: JD START
+  ------------------------------------------------------------------------------
+
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {
+      vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' }),
+    },
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    lazy = false,
+  },
+
+  -- Markdown preview plugin
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    build = 'cd app && npm install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
+
+  {
+    'christoomey/vim-tmux-navigator',
+    event = { 'VeryLazy' },
+    cmd = {
+      'TmuxNavigateLeft',
+      'TmuxNavigateDown',
+      'TmuxNavigateUp',
+      'TmuxNavigateRight',
+      'TmuxNavigatePrevious',
+    },
+    keys = {
+      { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
+      { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
+      { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
+      { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
+      { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
+    },
+  },
+  ------------------------------------------------------------------------------
+  -- NOTE: JD END
+  ------------------------------------------------------------------------------
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -291,36 +339,37 @@ require('lazy').setup({
         mappings = vim.g.have_nerd_font,
         -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
         -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-        keys = vim.g.have_nerd_font and {} or {
-          Up = '<Up> ',
-          Down = '<Down> ',
-          Left = '<Left> ',
-          Right = '<Right> ',
-          C = '<C-…> ',
-          M = '<M-…> ',
-          D = '<D-…> ',
-          S = '<S-…> ',
-          CR = '<CR> ',
-          Esc = '<Esc> ',
-          ScrollWheelDown = '<ScrollWheelDown> ',
-          ScrollWheelUp = '<ScrollWheelUp> ',
-          NL = '<NL> ',
-          BS = '<BS> ',
-          Space = '<Space> ',
-          Tab = '<Tab> ',
-          F1 = '<F1>',
-          F2 = '<F2>',
-          F3 = '<F3>',
-          F4 = '<F4>',
-          F5 = '<F5>',
-          F6 = '<F6>',
-          F7 = '<F7>',
-          F8 = '<F8>',
-          F9 = '<F9>',
-          F10 = '<F10>',
-          F11 = '<F11>',
-          F12 = '<F12>',
-        },
+        keys = {},
+        -- keys = vim.g.have_nerd_font and {} or {
+        --   Up = '<Up> ',
+        --   Down = '<Down> ',
+        --   Left = '<Left> ',
+        --   Right = '<Right> ',
+        --   C = '<C-…> ',
+        --   M = '<M-…> ',
+        --   D = '<D-…> ',
+        --   S = '<S-…> ',
+        --   CR = '<CR> ',
+        --   Esc = '<Esc> ',
+        --   ScrollWheelDown = '<ScrollWheelDown> ',
+        --   ScrollWheelUp = '<ScrollWheelUp> ',
+        --   NL = '<NL> ',
+        --   BS = '<BS> ',
+        --   Space = '<Space> ',
+        --   Tab = '<Tab> ',
+        --   F1 = '<F1>',
+        --   F2 = '<F2>',
+        --   F3 = '<F3>',
+        --   F4 = '<F4>',
+        --   F5 = '<F5>',
+        --   F6 = '<F6>',
+        --   F7 = '<F7>',
+        --   F8 = '<F8>',
+        --   F9 = '<F9>',
+        --   F10 = '<F10>',
+        --   F11 = '<F11>',
+        --   F12 = '<F12>',
+        -- },
       },
 
       -- Document existing key chains
@@ -905,6 +954,34 @@ require('lazy').setup({
       vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
+
+  ------------------------------------------------------------------------------
+  -- NOTE: JD START
+  ------------------------------------------------------------------------------
+  { -- colorscheme
+    'catppuccin/nvim',
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'catppuccin-mocha'
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+
+  { -- colorscheme
+    'projekt0n/github-nvim-theme',
+    name = 'github-theme',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000,
+    config = function()
+      require('github-theme').setup {
+        -- ...
+      }
+      vim.cmd 'colorscheme github_dark_default'
+    end,
+  },
+  ------------------------------------------------------------------------------
+  -- NOTE: JD END
+  ------------------------------------------------------------------------------
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
